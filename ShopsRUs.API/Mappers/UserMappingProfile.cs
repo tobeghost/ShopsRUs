@@ -10,7 +10,7 @@ namespace ShopsRUs.API.Mappers
         {
             CreateMap<Users, CustomerUsersDto>()
                 .ForMember(cdto => cdto.UserId, copt => copt.MapFrom(c => c.Id))
-                .ForMember(cdto => cdto.JoinedIn, opt => opt.MapFrom(c => c.CreatedOnDate.Date.ToLongDateString()));
+                .ForMember(cdto => cdto.CreatedOnDate, opt => opt.MapFrom(c => c.CreatedOnDate.Date.ToString("yyyy-MM-dd")));
 
             CreateMap<CreateCustomerUserDto, Users>();
         }
