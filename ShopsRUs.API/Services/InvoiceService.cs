@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShopsRUs.API.Services
 {
-    public class InvoiceService
+    public class InvoiceService : IInvoiceService
     {
         private readonly Repository<Invoice> _invoiceRepository;
 

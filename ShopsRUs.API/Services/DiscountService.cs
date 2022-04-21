@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShopsRUs.API.Services
 {
-    public partial class DiscountService
+    public partial class DiscountService : IDiscountService
     {
         private readonly Repository<Discounts> _discountRepository;
 

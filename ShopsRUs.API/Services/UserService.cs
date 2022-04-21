@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShopsRUs.API.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly Repository<Users> _userRepository;
 

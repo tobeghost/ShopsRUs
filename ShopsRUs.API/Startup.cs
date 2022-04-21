@@ -1,11 +1,16 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ShopsRUs.API.Data;
+using ShopsRUs.API.Models;
 using ShopsRUs.API.Services;
+using System.Net;
 
 namespace ShopsRUs.API
 {
@@ -30,16 +35,16 @@ namespace ShopsRUs.API
             services.AddDbContext<ApplicationDbContext>();
 
             //Implement all database table repositories.
-            services.AddScoped(typeof(Repository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             //Implement discount service.
-            services.AddScoped<DiscountService>();
+            services.AddScoped<IDiscountService, DiscountService>();
 
             //Implement invoice service.
-            services.AddScoped<InvoiceService>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
 
             //Implement user service.
-            services.AddScoped<UserService>();
+            services.AddScoped<IUserService, UserService>();
 
             //Swagger documentation
             services.AddSwaggerGen(c =>
@@ -49,7 +54,7 @@ namespace ShopsRUs.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
@@ -63,6 +68,26 @@ namespace ShopsRUs.API
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopsRUs v1");
                 });
             }
+
+            app.UseExceptionHandler(appError =>
+            {
+                appError.Run(async context =>
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.ContentType = "application/json";
+
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if (contextFeature != null)
+                    {
+                        logger.LogError($"Something went wrong: {contextFeature.Error}");
+                        await context.Response.WriteAsync(new ErrorModel()
+                        {
+                            StatusCode = context.Response.StatusCode,
+                            Message = "Internal Server Error."
+                        }.ToString());
+                    }
+                });
+            });
 
             app.UseHttpsRedirection();
 
