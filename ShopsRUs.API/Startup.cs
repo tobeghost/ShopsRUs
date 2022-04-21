@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ShopsRUs.API.Data;
+using ShopsRUs.API.Services;
 
 namespace ShopsRUs.API
 {
@@ -20,7 +22,26 @@ namespace ShopsRUs.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson();
+
+            //All auto mapping is done by the AutoMapper.
             services.AddAutoMapper(typeof(Startup));
+
+            //Implement application database context.
+            services.AddDbContext<ApplicationDbContext>();
+
+            //Implement all database table repositories.
+            services.AddScoped(typeof(Repository<>));
+
+            //Implement discount service.
+            services.AddScoped<DiscountService>();
+
+            //Implement invoice service.
+            services.AddScoped<InvoiceService>();
+
+            //Implement user service.
+            services.AddScoped<UserService>();
+
+            //Swagger documentation
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopsRUs", Version = "v1" });
@@ -34,6 +55,7 @@ namespace ShopsRUs.API
             {
                 app.UseDeveloperExceptionPage();
 
+                //Swagger user interface configuration
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
