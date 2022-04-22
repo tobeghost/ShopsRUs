@@ -7,10 +7,6 @@ namespace ShopsRUs.API.Models.Entities
     [Table("Discounts")]
     public partial class Discounts : BaseEntity
     {
-        public Discounts()
-        {
-        }
-
         [Required]
         [MaxLength(25)]
         public string Name { get; set; }
