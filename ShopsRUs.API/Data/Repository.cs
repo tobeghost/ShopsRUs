@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ShopsRUs.API.Data
 {
-    public abstract class Repository<T> : IRepository<T> where T : class
+    public partial class Repository<T> : IRepository<T> where T : class
     {
         private readonly ApplicationDbContext _context;
 
-        protected Repository(ApplicationDbContext context)
+        public Repository(ApplicationDbContext context)
         {
             _context = context;
         }

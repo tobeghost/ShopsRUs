@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopsRUs.API.Models.Entities
 {
+    [Table("Invoice")]
     public class Invoice : BaseEntity
     {
         [Required]

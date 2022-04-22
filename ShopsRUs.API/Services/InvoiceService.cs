@@ -10,9 +10,9 @@ namespace ShopsRUs.API.Services
 {
     public class InvoiceService : IInvoiceService
     {
-        private readonly Repository<Invoice> _invoiceRepository;
+        private readonly IRepository<Invoice> _invoiceRepository;
 
-        public InvoiceService(Repository<Invoice> invoiceRepository)
+        public InvoiceService(IRepository<Invoice> invoiceRepository)
         {
             _invoiceRepository = invoiceRepository;
         }

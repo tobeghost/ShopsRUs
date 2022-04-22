@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,7 @@ using ShopsRUs.API.Data;
 using ShopsRUs.API.Models;
 using ShopsRUs.API.Services;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace ShopsRUs.API
 {
@@ -26,13 +28,19 @@ namespace ShopsRUs.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
+
             services.AddControllers().AddNewtonsoftJson();
+            services.AddControllersWithViews().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             //All auto mapping is done by the AutoMapper.
             services.AddAutoMapper(typeof(Startup));
 
             //Implement application database context.
-            services.AddDbContext<ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureMSSQLConnection")));
 
             //Implement all database table repositories.
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -56,6 +64,11 @@ namespace ShopsRUs.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            using (var migrationSvcScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                migrationSvcScope.ServiceProvider.GetService<ApplicationDbContext>().Database.Migrate();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

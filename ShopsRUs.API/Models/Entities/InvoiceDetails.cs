@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopsRUs.API.Models.Entities
 {
+    [Table("InvoiceDetails")]
     public class InvoiceDetails : BaseEntity
     {
         [Required]

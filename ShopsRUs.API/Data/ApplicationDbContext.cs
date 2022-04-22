@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using ShopsRUs.API.Data.Configurations;
 using ShopsRUs.API.Models.Entities;
 

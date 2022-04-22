@@ -10,9 +10,9 @@ namespace ShopsRUs.API.Services
 {
     public class UserService : IUserService
     {
-        private readonly Repository<Users> _userRepository;
+        private readonly IRepository<Users> _userRepository;
 
-        public UserService(Repository<Users> userRepository)
+        public UserService(IRepository<Users> userRepository)
         {
             _userRepository = userRepository;
         }
