@@ -21,11 +21,11 @@ A single service api for generating discounts, invoice and customers
   > Update-Database
   
 - For cmd/cli (Visual studio code)
-  > dotnet ef database update
+  > dotnet ef database update --project ShopsRUs.API
  
 # Launch
 - To launch the project
-  > dotnet run (on the CLI or Package Manager Console)
+  > dotnet run --project ShopsRUs.API (on the CLI or Package Manager Console)
 
 # Testing
 - To lunch the unit test project
