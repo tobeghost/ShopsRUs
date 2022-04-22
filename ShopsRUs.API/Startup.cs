@@ -31,7 +31,7 @@ namespace ShopsRUs.API
             services.AddHttpClient();
 
             services.AddControllers().AddNewtonsoftJson();
-            services.AddControllersWithViews().AddJsonOptions(options =>
+            services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });

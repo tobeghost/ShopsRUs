@@ -22,6 +22,12 @@ namespace ShopsRUs.API.Data
             _context.SaveChanges();
         }
 
+        public virtual void AddRange(List<T> entity)
+        {
+            _context.Set<T>().AddRange(entity);
+            _context.SaveChanges();
+        }
+
         public virtual void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);

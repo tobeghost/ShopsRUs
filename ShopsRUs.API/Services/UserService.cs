@@ -2,6 +2,7 @@
 using ShopsRUs.API.Data;
 using ShopsRUs.API.Models.Entities;
 using ShopsRUs.API.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace ShopsRUs.API.Services
         public void CreateUser(Users user, UserType userType)
         {
             user.UserType = userType;
+            user.CreatedOnDate = DateTime.Now;
             _userRepository.Add(user);
         }
 

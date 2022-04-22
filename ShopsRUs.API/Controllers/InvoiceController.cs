@@ -32,32 +32,41 @@ namespace ShopsRUs.API.Controllers
         public async Task<IActionResult> GetInvoice(string billNumber)
         {
             if (billNumber == null) return BadRequest();
+
             var invoice = await _invoiceService.GetTotalInvoiceAmount(billNumber);
             if (invoice == null) return NotFound();
+
             var invoiceDto = _mapper.Map<InvoiceDto>(invoice);
+
             return Ok(invoiceDto.Total);
         }
 
         [HttpPost]
-        public async Task<IActionResult> GenerateInvoiceForACustomer(int userId, [FromBody] CreateInvoiceDto invoiceDto)
+        public async Task<IActionResult> GenerateInvoice(int userId, [FromBody] CreateInvoiceDto invoiceDto)
         {
-            var user = await _userService.GetCustomerById(userId);
+            var user = await _userService.GetUserById(userId);
             if (user == null) return NotFound();
 
             decimal invoiceSubtotal = 0;
             invoiceSubtotal = await ApplyDiscount(invoiceDto, invoiceSubtotal, user);
+
             var invoiceEntity = _mapper.Map<Invoice>(invoiceDto);
             invoiceEntity.Total = invoiceSubtotal;
-            _invoiceService.GenerateInvoiceForCustomer(userId, invoiceEntity);
+
+            _invoiceService.GenerateInvoice(userId, invoiceEntity);
+
+            _invoiceService.AddInvoiceDetails(invoiceEntity.Id, invoiceDto.InvoiceDetails);
+
             return Ok();
         }
 
         private async Task<decimal> ApplyDiscount(CreateInvoiceDto invoiceDto, decimal invoiceSubtotal, Users user)
         {
             var discounts = await _discountService.GetAllDiscounts();
+
             foreach (var discount in discounts)
             {
-                if (discount.Equals(user.UserType) && discount.IsRatePercentage)
+                if (discount.Type.GetHashCode() == user.UserType.GetHashCode() && discount.IsRatePercentage)
                 {
                     var discountValue = invoiceDto.OrderTotal * (discount.Rate / 100);
                     invoiceSubtotal = invoiceDto.OrderTotal - discountValue;

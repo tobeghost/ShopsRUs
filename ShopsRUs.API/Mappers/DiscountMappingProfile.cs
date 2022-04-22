@@ -9,8 +9,8 @@ namespace ShopsRUs.API.Mappers
         public DiscountMappingProfile()
         {
             CreateMap<Discounts, DiscountDto>()
-               .ForMember(cdto => cdto.DiscountId, copt => copt.MapFrom(c => c.Id))
-               .ForMember(cdto => cdto.CreatedOnDate, opt => opt.MapFrom(c => c.CreatedOnDate.Date.ToString("yyyy-MM-dd")));
+               .ForMember(x => x.DiscountId, x => x.MapFrom(c => c.Id))
+               .ForMember(x => x.CreatedOnDate, x => x.MapFrom(c => c.CreatedOnDate.Date.ToString("yyyy-MM-dd")));
 
             CreateMap<CreateDiscountDto, Discounts>();
         }

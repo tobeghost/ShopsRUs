@@ -9,8 +9,8 @@ namespace ShopsRUs.API.Mappers
         public UserMappingProfile()
         {
             CreateMap<Users, CustomerUsersDto>()
-                .ForMember(cdto => cdto.UserId, copt => copt.MapFrom(c => c.Id))
-                .ForMember(cdto => cdto.CreatedOnDate, opt => opt.MapFrom(c => c.CreatedOnDate.Date.ToString("yyyy-MM-dd")));
+                .ForMember(x => x.UserId, x => x.MapFrom(c => c.Id))
+                .ForMember(x => x.CreatedOnDate, x => x.MapFrom(c => c.CreatedOnDate.Date.ToString("yyyy-MM-dd")));
 
             CreateMap<CreateCustomerUserDto, Users>();
         }

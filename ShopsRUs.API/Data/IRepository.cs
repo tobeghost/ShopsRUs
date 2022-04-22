@@ -9,6 +9,7 @@ namespace ShopsRUs.API.Data
     public interface IRepository<T>
     {
         void Add(T entity);
+        void AddRange(List<T> entity);
         void Delete(T entity);
         void Update(T entity);
         IEnumerable<T> GetAll();

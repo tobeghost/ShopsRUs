@@ -17,11 +17,9 @@ namespace ShopsRUs.API.Models.Entities
         public string ProductName { get; set; }
 
         [Required]
-        [MaxLength(30)]
         public decimal ProductPrice { get; set; }
 
         [Required]
-        [MaxLength(30)]
         public int ProductQuantity { get; set; }
 
         [Required]

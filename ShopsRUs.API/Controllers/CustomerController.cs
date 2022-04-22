@@ -37,10 +37,12 @@ namespace ShopsRUs.API.Controllers
         public async Task<IActionResult> CreateCustomers([FromBody] CreateCustomerUserDto userDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var userEntity = _mapper.Map<Users>(userDto);
             _userService.CreateUser(userEntity, UserType.Customer);
 
             var customerToReturn = _mapper.Map<CustomerUsersDto>(userEntity);
+            
             return CreatedAtRoute("CustomerId", new { Id = customerToReturn.UserId }, customerToReturn);
         }
 
