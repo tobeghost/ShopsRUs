@@ -5,6 +5,10 @@ A single service api for generating discounts, invoice and customers
 - Download and istall the .NET SDK
   > https://dotnet.microsoft.com/download
 
+# Configuration
+- You should configure <code>appsettings.json</code> for Azure MSSQL connection string like;
+  > Server=AZURE_SERVER_NAME; Initial Catalog=ShopRUs; Persist Security Info=False; User ID=SQL_USERNAME; Password=SQL_PASSWORD; MultipleActiveResultSets=False; Encrypt=True; TrustServerCertificate=False; Connection Timeout=30;
+
 # Visual Studio
 - Simply open the solution file <code>ShopsRUs.sln</code> 
   > and wait for project restore. 
