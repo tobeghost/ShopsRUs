@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopsRUs.API.Models.DTOs
 {
@@ -16,6 +20,6 @@ namespace ShopsRUs.API.Models.DTOs
         [Range(0, (double)decimal.MaxValue, ErrorMessage = "The rate cannot be a negative number")]
         public decimal Rate { get; set; }
 
-        public bool IsRatePercentage { get; set; }
+        public bool IsRatePercentage { get; set; } 
     }
 }
